@@ -109,6 +109,73 @@ The `color` field returns a solid color by default, or a gradient if selected:
 }
 ```
 
+## Rich Text Schema with Highlight Annotation
+
+To use your color type from sanity-plugin-color-input inside Rich Text (Portable Text) annotations, you just need to define the annotation correctly in the marks.annotations section.
+
+```typescript
+export default {
+  name: 'richText',
+  title: 'Rich Text',
+  type: 'array',
+  of: [
+    {
+      type: 'block',
+      marks: {
+        annotations: [
+          {
+            name: 'highlight',
+            type: 'object',
+            title: 'Highlight',
+            fields: [
+              {
+                name: 'color',
+                type: 'color',
+                title: 'Color',
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+}
+```
+
+
+Example Stored Data
+
+```json
+{
+    "_key": "2ef685a16342",
+    "_type": "block",
+    "children": [
+        {
+            "_key": "4b929316bf10",
+            "_type": "span",
+            "marks": [
+                "f9bfae1005c4"
+            ],
+            "text": "Learning Platform"
+        }
+    ],
+    "markDefs": [
+        {
+            "_key": "f9bfae1005c4",
+            "_type": "highlight",
+            "color": {
+                "_type": "color",
+                "hex": "#cddc39",
+                "hsl": "hsl(66, 70%, 54%)",
+                "isGradient": false,
+                "rgba": "rgba(205, 220, 57, 1)"
+            }
+        }
+    ]
+}
+```
+
+
 ## License
 
 MIT © Code-Journey
