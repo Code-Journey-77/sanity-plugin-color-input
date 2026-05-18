@@ -1,6 +1,7 @@
 # Sanity Plugin Color Input
 
 A beautifully designed, premium, and highly customizable color picker plugin for **Sanity Studio v3, v4, and v5**.
+Supports solid colors and linear gradients.
 
 <p align="center">
   <img src="public/images/solid-mode.png" alt="Solid Mode Color Picker" width="45%" style="border-radius: 8px; margin: 10px;" />
@@ -9,18 +10,18 @@ A beautifully designed, premium, and highly customizable color picker plugin for
 
 ---
 
-## 🎨 Key Features
+## Key Features
 
-- ✨ **Visual Color Picker**: A sleek, modern user interface for precise color selection.
-- 🌈 **Dual Modes**: Seamlessly toggle between solid colors and gorgeous, linear gradients.
-- 💅 **Rich Format Outputs**: Computes and displays `HEX`, `RGBA`, and `HSL` formats, plus full CSS `linear-gradient` strings for gradients.
-- 📋 **One-Click Clipboard**: Instant copying of any color format to your clipboard.
-- 🚀 **Branded Presets**: Choose between our built-in curated presets or supply custom, brand-specific color arrays.
-- ⚡ **Studio Optimized**: Fully integrated with Sanity Studio's design tokens and responsive layout system.
+- **Visual Color Picker**: A sleek, modern user interface for precise color selection.
+- **Dual Modes**: Seamlessly toggle between solid colors and gorgeous, linear gradients.
+- **Rich Format Outputs**: Computes and displays `HEX`, `RGBA`, and `HSL` formats, plus full CSS `linear-gradient` strings for gradients.
+- **One-Click Clipboard**: Instant copying of any color format to your clipboard.
+- **Branded Presets**: Choose between our built-in curated presets or supply custom, brand-specific color arrays.
+- **Studio Optimized**: Fully integrated with Sanity Studio's design tokens and responsive layout system.
 
 ---
 
-## 📦 Installation
+## Installation
 
 Install the package using your preferred package manager:
 
@@ -37,7 +38,7 @@ pnpm add sanity-plugin-color-input
 
 ---
 
-## ⚙️ Configuration & Setup
+## Configuration & Setup
 
 > [!NOTE]  
 > Compatible with **Node.js 20, 22, and 24**.
@@ -49,14 +50,37 @@ import {defineConfig} from 'sanity'
 import {customColorPicker} from 'sanity-plugin-color-input'
 
 export default defineConfig({
-  // ...configuration settings
   plugins: [customColorPicker()],
+})
+```
+
+OR
+
+```typescript
+import {defineConfig} from 'sanity'
+import {customColorPicker} from 'sanity-plugin-color-input'
+
+export default defineConfig({
+  plugins: [
+    customColorPicker({
+      colors: [
+        // Solid colors
+        '#FF0000',
+        '#00FF00',
+        '#0000FF',
+        '#FFFF00',
+        // Gradient colors
+        {hex: '#FF007F', hex2: '#7F00FF', angle: 45},
+        {hex: '#00F2FE', hex2: '#4FACFE', angle: 180},
+      ],
+    }),
+  ],
 })
 ```
 
 ---
 
-## 🛠️ Schema Configuration
+## Schema Configuration
 
 Once initialized, the custom `color` schema type becomes globally available in your schema configurations.
 
@@ -105,13 +129,7 @@ export default {
       title: 'Accent Color',
       type: 'color',
       options: {
-        colors: [
-          // Solid hex color preset
-          '#1A1A1A',
-          '#F5F5F5',
-          // Complex gradient preset
-          {hex: '#E91E63', hex2: '#2196F3', angle: 45},
-        ],
+        colors: ['#1A1A1A', '#F5F5F5', {hex: '#E91E63', hex2: '#2196F3', angle: 45}],
       },
     },
   ],
@@ -120,7 +138,7 @@ export default {
 
 ---
 
-## 📊 Return Data Structure
+## Return Data Structure
 
 The returned database schema adapts dynamically to the selected mode:
 
@@ -139,7 +157,7 @@ The returned database schema adapts dynamically to the selected mode:
 
 ---
 
-## 📝 Rich Text / Portable Text Highlight Integration
+## Rich Text / Portable Text Highlight Integration
 
 To use the custom color picker inside Portable Text (Rich Text) highlight annotations, define a mark annotation inside your portable text array configuration:
 
@@ -209,3 +227,12 @@ export default {
 Proprietary © Code-Journey. All rights reserved.
 
 Licensed under our Proprietary License - Do Not Distribute. Unauthorized copying, distribution, publishing, modification, or reverse-engineering of this software is strictly prohibited. For complete details, see [LICENSE](file:///c:/Users/agola/OneDrive/Desktop/sanity-color-picker/LICENSE).
+
+---
+
+## ⭐ Support & Feedback
+
+If you find this plugin helpful, intuitive, or visually stunning, please consider leaving a star on our repository! Your appreciation helps keep us motivated to design, update, and maintain premium developer tools.
+
+- 👉 **[Star the Repository on GitHub](https://github.com/Code-Journey-77/sanity-plugin-color-input)**
+- 🔗 **[Sanity Plugin Marketplace Listing](https://www.sanity.io/plugins/sanity-plugin-color-input)**
