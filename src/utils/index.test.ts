@@ -1,3 +1,12 @@
+import {webcrypto} from 'node:crypto'
+
+if (typeof globalThis.crypto === 'undefined') {
+  Object.defineProperty(globalThis, 'crypto', {
+    value: webcrypto,
+    writable: true,
+  })
+}
+
 import {describe, it, expect, vi} from 'vitest'
 import React from 'react'
 import type {ObjectInputProps, ObjectSchemaType} from 'sanity'
