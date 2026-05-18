@@ -15,11 +15,10 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --external react,react-dom,sanity,@sanity/ui,styled-components",
+    "build": "tsup src/index.ts --format esm,cjs --dts --minify --external react,react-dom,sanity,@sanity/ui,styled-components",
     "prepublishOnly": "npm run build",
     "test": "vitest run",
     "format": "prettier --write .",
@@ -43,7 +42,7 @@
     "url": "https://github.com/Code-Journey-77/sanity-plugin-color-input/issues"
   },
   "homepage": "https://github.com/Code-Journey-77/sanity-plugin-color-input#readme",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",

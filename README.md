@@ -1,17 +1,28 @@
-# sanity-plugin-color-input
+# Sanity Plugin Color Input
 
-A beautifully designed, highly customizable color picker plugin for Sanity Studio v3, v4, and v5.
+A beautifully designed, premium, and highly customizable color picker plugin for **Sanity Studio v3, v4, and v5**.
 
-## Features
+<p align="center">
+  <img src="public/images/solid-mode.png" alt="Solid Mode Color Picker" width="45%" style="border-radius: 8px; margin: 10px;" />
+  <img src="public/images/gradient-mode.png" alt="Gradient Mode Color Picker" width="45%" style="border-radius: 8px; margin: 10px;" />
+</p>
 
-- 🎨 **Visual Color Picker**: A stunning visual interface to pick any color.
-- 🌈 **Gradient Support**: Toggle between solid colors and gorgeous linear gradients.
-- 💅 **Rich Return Format**: Provides HEX, RGBA, and HSL for solids, plus full CSS `linear-gradient` strings for gradients.
-- ✨ **Customizable Color Presets**: Use our meticulously crafted predefined presets or provide your own custom branded colors via options.
-- 📋 **One-Click Copy**: Easily copy HEX, RGBA, HSL, and CSS Gradient values to clipboard.
-- 🚀 **Built for Sanity**: Fully compatible with Sanity Studio v3, v4, and v5 architecture.
+---
 
-## Installation
+## 🎨 Key Features
+
+- ✨ **Visual Color Picker**: A sleek, modern user interface for precise color selection.
+- 🌈 **Dual Modes**: Seamlessly toggle between solid colors and gorgeous, linear gradients.
+- 💅 **Rich Format Outputs**: Computes and displays `HEX`, `RGBA`, and `HSL` formats, plus full CSS `linear-gradient` strings for gradients.
+- 📋 **One-Click Clipboard**: Instant copying of any color format to your clipboard.
+- 🚀 **Branded Presets**: Choose between our built-in curated presets or supply custom, brand-specific color arrays.
+- ⚡ **Studio Optimized**: Fully integrated with Sanity Studio's design tokens and responsive layout system.
+
+---
+
+## 📦 Installation
+
+Install the package using your preferred package manager:
 
 ```bash
 # Using npm
@@ -24,66 +35,81 @@ yarn add sanity-plugin-color-input
 pnpm add sanity-plugin-color-input
 ```
 
-## Setup & Usage
+---
 
-Compatible with **Node.js 18, 20, 22, and 24**.
+## ⚙️ Configuration & Setup
 
-Add it as a plugin in your `sanity.config.ts` (or `sanity.config.js`):
+> [!NOTE]  
+> Compatible with **Node.js 20, 22, and 24**.
+
+Initialize the plugin within your `sanity.config.ts` (or `sanity.config.js`) file:
 
 ```typescript
 import {defineConfig} from 'sanity'
 import {customColorPicker} from 'sanity-plugin-color-input'
 
 export default defineConfig({
-  // ...other config settings
-  plugins: [
-    // Add the plugin here
-    customColorPicker(),
-  ],
+  // ...configuration settings
+  plugins: [customColorPicker()],
 })
 ```
 
-## Schema Usage
+---
 
-Now you can use the `color` type in your schemas.
+## 🛠️ Schema Configuration
+
+Once initialized, the custom `color` schema type becomes globally available in your schema configurations.
+
+### Basic Usage
+
+Add the `color` type directly into your document schemas:
 
 ```typescript
 export default {
-  name: 'myDocument',
-  title: 'My Document',
+  name: 'project',
+  title: 'Project',
   type: 'document',
   fields: [
     {
-      name: 'brandColor',
-      title: 'Brand Color',
+      name: 'accentColor',
+      title: 'Accent Color',
       type: 'color',
     },
   ],
 }
 ```
 
-### Customizing the Preset Colors
+### Default Color Presets
 
-You can easily override the default color presets by providing your own `colors` array in your field's `options`:
+By default, the picker provides a curated array of professional preset solid and gradient colors:
+
+- **Solid Colors**:
+  - `Red`: `#f44336`
+  - `Pink`: `#e91e63`
+- **Linear Gradients**:
+  - `Warm Sunset`: `#ff9a9e` to `#fad0c4` (at `90°`)
+  - `Spring Meadow`: `#84fab0` to `#8fd3f4` (at `45°`)
+
+### Providing Branded Color Presets
+
+To lock the color palette to your brand specifications, override the default presets by providing a `colors` list inside the field `options`:
 
 ```typescript
 export default {
-  name: 'myDocument',
-  title: 'My Document',
+  name: 'project',
+  title: 'Project',
   type: 'document',
   fields: [
     {
-      name: 'brandColor',
-      title: 'Brand Color',
+      name: 'accentColor',
+      title: 'Accent Color',
       type: 'color',
       options: {
-        // This will override the default presets, useful for restricting choices
-        // to brand-specific color palettes.
         colors: [
-          // Solid color presets
+          // Solid hex color preset
           '#1A1A1A',
           '#F5F5F5',
-          // Gradient preset
+          // Complex gradient preset
           {hex: '#E91E63', hex2: '#2196F3', angle: 45},
         ],
       },
@@ -92,9 +118,11 @@ export default {
 }
 ```
 
-## Data Structure
+---
 
-The `color` field returns a solid color by default, or a gradient if selected:
+## 📊 Return Data Structure
+
+The returned database schema adapts dynamically to the selected mode:
 
 ```json
 {
@@ -109,9 +137,11 @@ The `color` field returns a solid color by default, or a gradient if selected:
 }
 ```
 
-## Rich Text Schema with Highlight Annotation
+---
 
-To use your color type from sanity-plugin-color-input inside Rich Text (Portable Text) annotations, you just need to define the annotation correctly in the marks.annotations section.
+## 📝 Rich Text / Portable Text Highlight Integration
+
+To use the custom color picker inside Portable Text (Rich Text) highlight annotations, define a mark annotation inside your portable text array configuration:
 
 ```typescript
 export default {
@@ -126,12 +156,12 @@ export default {
           {
             name: 'highlight',
             type: 'object',
-            title: 'Highlight',
+            title: 'Highlight Annotation',
             fields: [
               {
                 name: 'color',
                 type: 'color',
-                title: 'Color',
+                title: 'Text Color',
               },
             ],
           },
@@ -142,40 +172,40 @@ export default {
 }
 ```
 
-
-Example Stored Data
+### Stored Rich Text Payload Example
 
 ```json
 {
-    "_key": "2ef685a16342",
-    "_type": "block",
-    "children": [
-        {
-            "_key": "4b929316bf10",
-            "_type": "span",
-            "marks": [
-                "f9bfae1005c4"
-            ],
-            "text": "Learning Platform"
-        }
-    ],
-    "markDefs": [
-        {
-            "_key": "f9bfae1005c4",
-            "_type": "highlight",
-            "color": {
-                "_type": "color",
-                "hex": "#cddc39",
-                "hsl": "hsl(66, 70%, 54%)",
-                "isGradient": false,
-                "rgba": "rgba(205, 220, 57, 1)"
-            }
-        }
-    ]
+  "_key": "2ef685a16342",
+  "_type": "block",
+  "children": [
+    {
+      "_key": "4b929316bf10",
+      "_type": "span",
+      "marks": ["f9bfae1005c4"],
+      "text": "Learning Platform"
+    }
+  ],
+  "markDefs": [
+    {
+      "_key": "f9bfae1005c4",
+      "_type": "highlight",
+      "color": {
+        "_type": "color",
+        "hex": "#cddc39",
+        "hsl": "hsl(66, 70%, 54%)",
+        "isGradient": false,
+        "rgba": "rgba(205, 220, 57, 1)"
+      }
+    }
+  ]
 }
 ```
 
+---
 
-## License
+## ⚖️ License
 
-MIT © Code-Journey
+Proprietary © Code-Journey. All rights reserved.
+
+Licensed under our Proprietary License - Do Not Distribute. Unauthorized copying, distribution, publishing, modification, or reverse-engineering of this software is strictly prohibited. For complete details, see [LICENSE](file:///c:/Users/agola/OneDrive/Desktop/sanity-color-picker/LICENSE).

@@ -54,5 +54,7 @@ export function hexToHsl(hex: string) {
 }
 
 export function getGradientString(angle: number, color1: string, color2: string) {
-  return `linear-gradient(${angle}deg, ${color1}, ${color2})`
+  const c1 = isValidHex(color1) ? color1 : 'transparent'
+  const c2 = isValidHex(color2) ? color2 : 'transparent'
+  return `linear-gradient(${angle}deg, ${c1}, ${c2})`
 }
