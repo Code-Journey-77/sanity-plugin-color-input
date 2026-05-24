@@ -3,6 +3,10 @@
 A beautifully designed, premium, and highly customizable color picker plugin for **Sanity Studio v3, v4, and v5**.
 Supports solid colors and linear gradients.
 
+## Documentation
+
+For full setup guides, configuration options, visit our [In-depth Documentation](https://code-journey-package-guides.vercel.app/sanity-plugin-color-input).
+
 <p align="center">
   <img src="public/images/solid-mode.png" alt="Solid Mode Color Picker" width="45%" style="border-radius: 8px; margin: 10px;" />
   <img src="public/images/gradient-mode.png" alt="Gradient Mode Color Picker" width="45%" style="border-radius: 8px; margin: 10px;" />

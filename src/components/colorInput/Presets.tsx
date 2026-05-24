@@ -1,15 +1,23 @@
 import {Box, Card, Flex, Text} from '@sanity/ui'
-import {getGradientString} from '../../utils'
-
-type PresetColor = string | {hex: string; hex2?: string; angle?: number}
+import {getGradientString, type PresetColor} from '../../utils'
 
 interface PresetsProps {
   colorsList: PresetColor[]
   localValue: string
+  localValue2?: string
+  isGradient?: boolean
+  angle?: number
   onPresetClick: (preset: PresetColor) => void
 }
 
-export function Presets({colorsList, localValue, onPresetClick}: PresetsProps) {
+export function Presets({
+  colorsList,
+  localValue,
+  localValue2 = '',
+  isGradient = false,
+  angle = 180,
+  onPresetClick,
+}: PresetsProps) {
   return (
     <Card padding={3} border radius={3}>
       <Flex direction="column" gap={3}>
@@ -23,7 +31,17 @@ export function Presets({colorsList, localValue, onPresetClick}: PresetsProps) {
             const h2 = isObj ? color.hex2 : null
             const ang = isObj ? color.angle || 180 : 180
             const bg = h2 ? getGradientString(ang, h1, h2) : h1
-            const isSelected = localValue === h1
+
+            const isSelected = isGradient
+              ? isObj &&
+                !!color?.hex2 &&
+                color?.hex?.toLowerCase() === localValue?.toLowerCase() &&
+                color?.hex2?.toLowerCase() === localValue2?.toLowerCase() &&
+                (color?.angle ?? 180) === angle
+              : (!isObj || !color.hex2) &&
+                (isObj
+                  ? color?.hex?.toLowerCase() === localValue?.toLowerCase()
+                  : color?.toLowerCase() === localValue?.toLowerCase())
 
             return (
               <Box

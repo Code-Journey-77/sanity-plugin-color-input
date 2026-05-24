@@ -1,6 +1,6 @@
 {
   "name": "sanity-plugin-color-input",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Professional color picker with gradient support for Sanity Studio v3, v4, and v5",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

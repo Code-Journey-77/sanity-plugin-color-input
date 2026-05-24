@@ -9,8 +9,15 @@ if (typeof globalThis.crypto === 'undefined') {
 
 import {describe, it, expect, vi} from 'vitest'
 import React from 'react'
-import type {ObjectInputProps, ObjectSchemaType} from 'sanity'
-import {isValidHex, getContrastColor, hexToRgba, hexToHsl, getGradientString} from './index'
+import type {ObjectInputProps, ObjectSchemaType, SchemaType} from 'sanity'
+import {
+  isValidHex,
+  getContrastColor,
+  hexToRgba,
+  hexToHsl,
+  getGradientString,
+  resolveColors,
+} from './index'
 import {CustomInput} from '../components/colorInput/CustomInput'
 import {ModeToggle} from '../components/colorInput/ModeToggle'
 import {Preview} from '../components/colorInput/Preview'
@@ -109,6 +116,48 @@ describe('Color Utilities', () => {
       expect(getGradientString(45, 'invalid', 'invalid')).toBe(
         'linear-gradient(45deg, transparent, transparent)',
       )
+    })
+  })
+
+  describe('resolveColors', () => {
+    const fallback = ['#fallback']
+
+    it('should return fallback if schemaType is undefined', () => {
+      expect(resolveColors(undefined, fallback)).toEqual(fallback)
+    })
+
+    it('should return fallback if no colors options exist in the hierarchy', () => {
+      const schemaType = {
+        name: 'test',
+        type: {
+          name: 'base',
+        },
+      } as unknown as SchemaType
+      expect(resolveColors(schemaType, fallback)).toEqual(fallback)
+    })
+
+    it('should resolve colors from the field schema options if they exist', () => {
+      const schemaType = {
+        options: {
+          colors: ['#field1'],
+        },
+      } as unknown as SchemaType
+      expect(resolveColors(schemaType, fallback)).toEqual(['#field1'])
+    })
+
+    it('should fall back to base type colors if field options are present but do not contain colors', () => {
+      const baseType = {
+        options: {
+          colors: ['#brand1', '#brand2'],
+        },
+      } as unknown as SchemaType
+      const schemaType = {
+        type: baseType,
+        options: {
+          someOtherOption: true,
+        },
+      } as unknown as SchemaType
+      expect(resolveColors(schemaType, fallback)).toEqual(['#brand1', '#brand2'])
     })
   })
 
@@ -244,7 +293,7 @@ describe('Color Utilities', () => {
     describe('Presets (Edge Cases)', () => {
       it('should handle preset object with custom hex2 and angle', () => {
         const onPresetClick = vi.fn()
-        const colorsList = ['#ff0000', {hex: '#ff9a9e', hex2: '#fad0c4', angle: 90}]
+        const colorsList = ['#ff9a9e', {hex: '#ff9a9e', hex2: '#fad0c4', angle: 90}]
         const element = React.createElement(Presets, {
           colorsList: colorsList,
           localValue: '#ff9a9e',
@@ -252,6 +301,38 @@ describe('Color Utilities', () => {
         })
         expect(element.props.colorsList).toEqual(colorsList)
         expect(element.props.localValue).toBe('#ff9a9e')
+      })
+
+      it('should select only the solid preset when isGradient is false, even if a gradient starts with the same color', () => {
+        const onPresetClick = vi.fn()
+        const colorsList = ['#ffffff', {hex: '#ffffff', hex2: '#000000', angle: 90}]
+        const result = Presets({
+          colorsList,
+          localValue: '#ffffff',
+          localValue2: '#000000',
+          isGradient: false,
+          angle: 90,
+          onPresetClick,
+        })
+        const boxes = result.props.children.props.children[1].props.children
+        expect(boxes[0].props.style.border).toContain('var(--card-focus-ring-color')
+        expect(boxes[1].props.style.border).toContain('var(--card-border-color')
+      })
+
+      it('should select only the gradient preset when isGradient is true, even if a solid preset matches the starting color', () => {
+        const onPresetClick = vi.fn()
+        const colorsList = ['#ffffff', {hex: '#ffffff', hex2: '#000000', angle: 90}]
+        const result = Presets({
+          colorsList,
+          localValue: '#ffffff',
+          localValue2: '#000000',
+          isGradient: true,
+          angle: 90,
+          onPresetClick,
+        })
+        const boxes = result.props.children.props.children[1].props.children
+        expect(boxes[0].props.style.border).toContain('var(--card-border-color')
+        expect(boxes[1].props.style.border).toContain('var(--card-focus-ring-color')
       })
     })
 

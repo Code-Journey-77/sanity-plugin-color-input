@@ -1,8 +1,9 @@
 import {definePlugin, type PluginOptions} from 'sanity'
 import {colorType} from './schemas/colorType'
+import {type PresetColor} from './utils'
 
 export interface ColorPickerPluginConfig {
-  colors?: (string | {hex: string; hex2?: string; angle?: number})[]
+  colors?: PresetColor[]
 }
 
 export const customColorPicker = (config?: ColorPickerPluginConfig): PluginOptions => {

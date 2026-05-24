@@ -2,7 +2,14 @@ import {useCallback, useEffect, useState} from 'react'
 import {Flex, Text, useToast} from '@sanity/ui'
 import {PatchEvent, set, setIfMissing, unset, type ObjectInputProps} from 'sanity'
 import {PRESET_COLORS} from '../../constants'
-import {isValidHex, hexToRgba, hexToHsl, getGradientString} from '../../utils'
+import {
+  isValidHex,
+  hexToRgba,
+  hexToHsl,
+  getGradientString,
+  resolveColors,
+  type PresetColor,
+} from '../../utils'
 import {CustomInput} from './CustomInput'
 import {ModeToggle} from './ModeToggle'
 import {Preview} from './Preview'
@@ -18,9 +25,7 @@ export function CustomColorPicker(props: ObjectInputProps) {
   const {value, onChange, elementProps, schemaType} = props
   const toast = useToast()
 
-  const optionsColors = schemaType?.options?.colors
-  const colorsList =
-    Array.isArray(optionsColors) && optionsColors.length > 0 ? optionsColors : PRESET_COLORS
+  const colorsList = resolveColors(schemaType, PRESET_COLORS)
 
   const currentHex = value?.hex || ''
   const currentHex2 = value?.hex2 || ''
@@ -119,24 +124,21 @@ export function CustomColorPicker(props: ObjectInputProps) {
     setAngle(Number(e.currentTarget.value))
   }, [])
 
-  const handlePresetClick = useCallback(
-    (preset: string | {hex: string; hex2?: string; angle?: number}) => {
-      if (typeof preset === 'string') {
-        setLocalValue(preset)
-        setIsGradient(false)
+  const handlePresetClick = useCallback((preset: PresetColor) => {
+    if (typeof preset === 'string') {
+      setLocalValue(preset)
+      setIsGradient(false)
+    } else {
+      setLocalValue(preset.hex)
+      if (preset.hex2) {
+        setLocalValue2(preset.hex2)
+        setIsGradient(true)
+        if (preset.angle !== undefined) setAngle(preset.angle)
       } else {
-        setLocalValue(preset.hex)
-        if (preset.hex2) {
-          setLocalValue2(preset.hex2)
-          setIsGradient(true)
-          if (preset.angle !== undefined) setAngle(preset.angle)
-        } else {
-          setIsGradient(false)
-        }
+        setIsGradient(false)
       }
-    },
-    [],
-  )
+    }
+  }, [])
 
   const copyToClipboard = async (text: string, label: string) => {
     try {
@@ -203,7 +205,14 @@ export function CustomColorPicker(props: ObjectInputProps) {
       />
 
       {/* Presets */}
-      <Presets colorsList={colorsList} localValue={localValue} onPresetClick={handlePresetClick} />
+      <Presets
+        colorsList={colorsList}
+        localValue={localValue}
+        localValue2={localValue2}
+        isGradient={isGradient}
+        angle={angle}
+        onPresetClick={handlePresetClick}
+      />
 
       {/* Output Values */}
       <ValueOutputs

@@ -58,3 +58,24 @@ export function getGradientString(angle: number, color1: string, color2: string)
   const c2 = isValidHex(color2) ? color2 : 'transparent'
   return `linear-gradient(${angle}deg, ${c1}, ${c2})`
 }
+
+import type {SchemaType} from 'sanity'
+
+export type PresetColor = string | {hex: string; hex2?: string; angle?: number}
+
+export function resolveColors(
+  schemaType: SchemaType | undefined,
+  fallbackColors: PresetColor[],
+): PresetColor[] {
+  let currentType: SchemaType | undefined = schemaType
+  let depth = 0
+  while (currentType && depth < 10) {
+    const colors = currentType?.options?.colors
+    if (Array.isArray(colors) && colors?.length > 0) {
+      return colors as PresetColor[]
+    }
+    currentType = currentType?.type
+    depth++
+  }
+  return fallbackColors
+}
