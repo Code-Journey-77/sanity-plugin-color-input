@@ -1,7 +1,7 @@
 {
   "name": "sanity-plugin-color-input",
-  "version": "1.2.1",
-  "description": "Professional color picker with gradient support for Sanity Studio v3, v4, and v5",
+  "version": "1.3.1",
+  "description": "Color input plugin for Sanity Studio with advanced gradient support that stores selected colors in hex, hsl, hsv and rgb formats.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -27,6 +27,10 @@
   "keywords": [
     "sanity",
     "sanity-plugin",
+    "cms",
+    "content",
+    "headless",
+    "realtime",
     "sanity-color-picker",
     "sanity-color-input",
     "color-picker",
@@ -35,13 +39,13 @@
     "linear-gradient",
     "rgba",
     "hsl",
+    "hsv",
     "hex",
-    "presets",
-    "portable-text",
-    "rich-text",
+    "rgb",
     "sanity-v3",
     "sanity-v4",
-    "sanity-v5"
+    "sanity-v5",
+    "sanity-v6"
   ],
   "author": "Code-Journey <codejourney.info@gmail.com>",
   "repository": {
@@ -52,11 +56,11 @@
     "url": "https://github.com/Code-Journey-77/sanity-plugin-color-input/issues"
   },
   "homepage": "https://github.com/Code-Journey-77/sanity-plugin-color-input#readme",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
-    "sanity": "^3.0.0 || ^4.0.0 || ^5.0.0",
+    "sanity": "^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0",
     "styled-components": "^6.0.0"
   },
   "devDependencies": {

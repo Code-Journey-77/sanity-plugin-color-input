@@ -1,6 +1,6 @@
 # Sanity Plugin Color Input
 
-A beautifully designed, premium, and highly customizable color picker plugin for **Sanity Studio v3, v4, and v5**.
+A beautifully designed, premium, and highly customizable color picker plugin for **Sanity Studio v3, v4, v5, and v6**.
 Supports solid colors and linear gradients.
 
 ## Documentation
@@ -45,7 +45,7 @@ pnpm add sanity-plugin-color-input
 ## Configuration & Setup
 
 > [!NOTE]  
-> Compatible with **Node.js 20, 22, and 24**.
+> Compatible with **Node.js 22, 24, and 26**.
 
 Initialize the plugin within your `sanity.config.ts` (or `sanity.config.js`) file:
 
@@ -67,6 +67,8 @@ import {customColorPicker} from 'sanity-plugin-color-input'
 export default defineConfig({
   plugins: [
     customColorPicker({
+      disablePresets: false,
+      disableCopyValues: false,
       colors: [
         // Solid colors
         '#FF0000',
@@ -134,6 +136,29 @@ export default {
       type: 'color',
       options: {
         colors: ['#1A1A1A', '#F5F5F5', {hex: '#E91E63', hex2: '#2196F3', angle: 45}],
+      },
+    },
+  ],
+}
+```
+
+### Hiding Presets and Copy Values
+
+You can disable the presets section or the copy value outputs section either globally via the plugin configuration, or individually on a per-field basis:
+
+```typescript
+export default {
+  name: 'project',
+  title: 'Project',
+  type: 'document',
+  fields: [
+    {
+      name: 'accentColor',
+      title: 'Accent Color',
+      type: 'color',
+      options: {
+        disablePresets: true,
+        disableCopyValues: true,
       },
     },
   ],
@@ -228,9 +253,9 @@ export default {
 
 ## ⚖️ License
 
-Proprietary © Code-Journey. All rights reserved.
+MIT License © Code-Journey. All rights reserved.
 
-Licensed under our Proprietary License - Do Not Distribute. Unauthorized copying, distribution, publishing, modification, or reverse-engineering of this software is strictly prohibited. For complete details, see [LICENSE](file:///c:/Users/agola/OneDrive/Desktop/sanity-color-picker/LICENSE).
+Licensed under the MIT License. You may obtain a copy of the License at [LICENSE](LICENSE).
 
 ---
 

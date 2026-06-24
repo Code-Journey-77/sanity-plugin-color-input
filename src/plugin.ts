@@ -4,16 +4,20 @@ import {type PresetColor} from './utils'
 
 export interface ColorPickerPluginConfig {
   colors?: PresetColor[]
+  disablePresets?: boolean
+  disableCopyValues?: boolean
 }
 
 export const customColorPicker = (config?: ColorPickerPluginConfig): PluginOptions => {
-  const colors = config?.colors
+  const {colors, disablePresets, disableCopyValues} = config || {}
 
   const customizedColorType = {
     ...colorType,
     options: {
       ...colorType?.options,
-      colors: colors,
+      ...(colors !== undefined && {colors}),
+      ...(disablePresets !== undefined && {disablePresets}),
+      ...(disableCopyValues !== undefined && {disableCopyValues}),
     },
   }
 

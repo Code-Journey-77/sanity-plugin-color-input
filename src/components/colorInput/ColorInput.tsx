@@ -8,6 +8,7 @@ import {
   hexToHsl,
   getGradientString,
   resolveColors,
+  resolveOption,
   type PresetColor,
 } from '../../utils'
 import {CustomInput} from './CustomInput'
@@ -26,6 +27,8 @@ export function CustomColorPicker(props: ObjectInputProps) {
   const toast = useToast()
 
   const colorsList = resolveColors(schemaType, PRESET_COLORS)
+  const disablePresets = resolveOption(schemaType, 'disablePresets', false)
+  const disableCopyValues = resolveOption(schemaType, 'disableCopyValues', false)
 
   const currentHex = value?.hex || ''
   const currentHex2 = value?.hex2 || ''
@@ -205,23 +208,27 @@ export function CustomColorPicker(props: ObjectInputProps) {
       />
 
       {/* Presets */}
-      <Presets
-        colorsList={colorsList}
-        localValue={localValue}
-        localValue2={localValue2}
-        isGradient={isGradient}
-        angle={angle}
-        onPresetClick={handlePresetClick}
-      />
+      {!disablePresets && (
+        <Presets
+          colorsList={colorsList}
+          localValue={localValue}
+          localValue2={localValue2}
+          isGradient={isGradient}
+          angle={angle}
+          onPresetClick={handlePresetClick}
+        />
+      )}
 
       {/* Output Values */}
-      <ValueOutputs
-        localValue={localValue}
-        localValue2={localValue2}
-        isGradient={isGradient}
-        angle={angle}
-        onCopy={copyToClipboard}
-      />
+      {!disableCopyValues && (
+        <ValueOutputs
+          localValue={localValue}
+          localValue2={localValue2}
+          isGradient={isGradient}
+          angle={angle}
+          onCopy={copyToClipboard}
+        />
+      )}
     </Flex>
   )
 }

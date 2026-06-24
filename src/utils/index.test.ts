@@ -16,6 +16,7 @@ import {
   hexToRgba,
   hexToHsl,
   getGradientString,
+  resolveOption,
   resolveColors,
 } from './index'
 import {CustomInput} from '../components/colorInput/CustomInput'
@@ -116,6 +117,46 @@ describe('Color Utilities', () => {
       expect(getGradientString(45, 'invalid', 'invalid')).toBe(
         'linear-gradient(45deg, transparent, transparent)',
       )
+    })
+  })
+
+  describe('resolveOption', () => {
+    it('should return defaultValue if schemaType is undefined', () => {
+      expect(resolveOption(undefined, 'myOption', 'default')).toBe('default')
+    })
+
+    it('should return defaultValue if option does not exist in the hierarchy', () => {
+      const schemaType = {
+        name: 'test',
+        type: {
+          name: 'base',
+        },
+      } as unknown as SchemaType
+      expect(resolveOption(schemaType, 'myOption', 'default')).toBe('default')
+    })
+
+    it('should resolve option from the field schema options if it exists', () => {
+      const schemaType = {
+        options: {
+          myOption: 'fieldValue',
+        },
+      } as unknown as SchemaType
+      expect(resolveOption(schemaType, 'myOption', 'default')).toBe('fieldValue')
+    })
+
+    it('should fall back to base type option if field options do not contain it', () => {
+      const baseType = {
+        options: {
+          myOption: 'baseValue',
+        },
+      } as unknown as SchemaType
+      const schemaType = {
+        type: baseType,
+        options: {
+          someOtherOption: true,
+        },
+      } as unknown as SchemaType
+      expect(resolveOption(schemaType, 'myOption', 'default')).toBe('baseValue')
     })
   })
 

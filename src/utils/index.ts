@@ -63,19 +63,31 @@ import type {SchemaType} from 'sanity'
 
 export type PresetColor = string | {hex: string; hex2?: string; angle?: number}
 
+export function resolveOption<T>(
+  schemaType: SchemaType | undefined,
+  optionName: string,
+  defaultValue: T,
+): T {
+  let currentType: SchemaType | undefined = schemaType
+  let depth = 0
+  while (currentType && depth < 10) {
+    const value = currentType?.options?.[optionName]
+    if (value !== undefined) {
+      return value as T
+    }
+    currentType = currentType?.type
+    depth++
+  }
+  return defaultValue
+}
+
 export function resolveColors(
   schemaType: SchemaType | undefined,
   fallbackColors: PresetColor[],
 ): PresetColor[] {
-  let currentType: SchemaType | undefined = schemaType
-  let depth = 0
-  while (currentType && depth < 10) {
-    const colors = currentType?.options?.colors
-    if (Array.isArray(colors) && colors?.length > 0) {
-      return colors as PresetColor[]
-    }
-    currentType = currentType?.type
-    depth++
+  const colors = resolveOption<PresetColor[] | undefined>(schemaType, 'colors', undefined)
+  if (Array.isArray(colors) && colors.length > 0) {
+    return colors
   }
   return fallbackColors
 }
